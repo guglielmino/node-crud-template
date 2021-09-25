@@ -1,0 +1,19 @@
+swagger:
+  outputDirectory: ./dist
+  entryFile: 
+    - ./src/presentation/rest/controllers/*
+  outputFormat: OpenApi_3
+  name: Node.js CRUD template 
+  description: Basic template to develop Node.js micro services
+  license: MIT
+  produces: [application/json]
+  version: 0.0.1
+  securityDefinitions:
+    default:
+      type: apiKey
+      in: header
+      name: Authorization
+    secondAuthenticator:
+      type: apiKey
+      in: header
+      name: Authorization
