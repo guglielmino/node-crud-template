@@ -10,6 +10,7 @@ import { MySqlConnector } from './infra/database/mysql.db';
 const setupIoC = () => {
   registerEnv();
 
+  // Define the Database Implementation to use
   Container.bind(BaseDbConnector).to(MySqlConnector).scope(Scope.Singleton);
   Container.bind(GraphQLServer).scope(Scope.Singleton);
   Container.bind(ExpressServer).scope(Scope.Singleton);
@@ -18,7 +19,7 @@ const setupIoC = () => {
 const start = async () => {
   setupIoC();
 
-  const connector = Container.get(MySqlConnector);
+  const connector = Container.get(BaseDbConnector);
   await connector.connect();
 
   const appServer = Container.get(ExpressServer);
