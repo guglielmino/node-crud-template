@@ -11,6 +11,7 @@ const envOrDefault = (env: string, defaultValue = '', required = true): string =
 
 export interface IServerConfig {
   port: number;
+  host: string;
   jwtSecret: string;
 }
 
@@ -33,6 +34,7 @@ const registerEnv = (): void => {
     environment: envOrDefault('NODE_ENV', 'development', false),
     server: {
       port: +envOrDefault('PORT', '8080', false),
+      host: envOrDefault('HOST', '0.0.0.0', false),
       jwtSecret: envOrDefault('JWT_SECRET', '', true)
     },
     database: {

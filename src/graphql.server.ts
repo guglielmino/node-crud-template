@@ -1,16 +1,18 @@
 import { ApolloServer } from 'apollo-server-express';
 import * as express from 'express';
-import { InjectValue } from 'typescript-ioc';
+import { Inject } from 'typescript-ioc';
+import { ExpressServer } from './express.server';
 import getAllModulesSchema from './presentation/graphql/modules';
 
 export class GraphQLServer {
 
+  private app: express.Application;
   private server: ApolloServer;
 
   constructor(
-    @InjectValue('app') private app: express.Application
+    @Inject private expressServer: ExpressServer
   ) {
-    this.app = app;
+    this.app = this.expressServer.app;
 
     this.server = new ApolloServer({
       schema: getAllModulesSchema()
