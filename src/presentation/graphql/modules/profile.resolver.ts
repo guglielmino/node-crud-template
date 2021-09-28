@@ -26,6 +26,17 @@ class ProfileResolver {
             throw new ApolloError(error);
           }
         }
+      },
+      Mutation: {
+        createProfile: async (_: any, args: any) => {
+          try {
+            const { profile }: any = args;
+            const res = await this.profileService.create([profile]);
+            return res;
+          } catch (error) {
+            throw new ApolloError(error);
+          }
+        }
       }
     };
   }

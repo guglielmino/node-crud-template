@@ -1,4 +1,4 @@
-import { typeDefs } from './profile.shema';
+import { typeDefs } from './profile.schema';
 import ProfileResolver from './profile.resolver';
 
 class ProfileModule {
