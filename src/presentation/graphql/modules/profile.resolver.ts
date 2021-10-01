@@ -1,9 +1,13 @@
 import { ApolloError } from 'apollo-server-express';
 import { Inject } from 'typescript-ioc';
+import { ILogger } from '../../../framework/infra/database/logger/logger.interface';
 import { ORDER } from '../../../framework/order.enum';
 import { ProfileService } from '../../../services/profile.service';
 
 class ProfileResolver {
+
+  @Inject
+  private logger: ILogger;
 
   @Inject
   private profileService: ProfileService;
@@ -15,6 +19,7 @@ class ProfileResolver {
           try {
             return await this.profileService.list(100, 1, ORDER.DESC);
           } catch (error) {
+            this.logger.log(error);
             throw new ApolloError(error);
           }
         },
@@ -23,6 +28,7 @@ class ProfileResolver {
             const { id }: any = args;
             return await this.profileService.get(id);
           } catch (error) {
+            this.logger.log(error);
             throw new ApolloError(error);
           }
         }
@@ -32,8 +38,9 @@ class ProfileResolver {
           try {
             const { profile }: any = args;
             const res = await this.profileService.create([profile]);
-            return res;
+            return res.identifiers;
           } catch (error) {
+            this.logger.log(error);
             throw new ApolloError(error);
           }
         }

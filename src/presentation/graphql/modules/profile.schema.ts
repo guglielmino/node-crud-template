@@ -25,6 +25,6 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    createProfile(profile: ProfileInput): Profile
+    createProfile(profile: ProfileInput): String
   }
 `;
