@@ -21,14 +21,14 @@ export class ExpressServer {
 
   public async start(): Promise<void> {
     const httpServer = new http.Server(this.app);
-    this.server = await httpServer.listen(this.config.port, this.config.host);
+    this.server = httpServer.listen(this.config.port, this.config.host);
 
     console.log(`Listening to http://${this.config.host}:${this.config.port}`);
   }
 
   public async stop(): Promise<void> {
     if (this.server) {
-      await this.server.close();
+      this.server.close();
     }
   }
 
