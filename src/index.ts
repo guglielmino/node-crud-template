@@ -5,11 +5,13 @@ import { ExpressServer } from './express.server';
 import { BaseDbConnector } from './framework/infra/database/base.db';
 import { GraphQLServer } from './graphql.server';
 import { MySqlConnector } from './infra/database/mysql.db';
-
+import WinstonLogger from './infra/logger/winstonLogger';
+import { ILogger } from './framework/infra/database/logger/logger.interface';
 
 const setupIoC = () => {
   registerEnv();
 
+  Container.bind(ILogger).to(WinstonLogger).scope(Scope.Singleton);
   // Define the Database Implementation to use
   Container.bind(BaseDbConnector).to(MySqlConnector).scope(Scope.Singleton);
   Container.bind(GraphQLServer).scope(Scope.Singleton);
@@ -31,9 +33,10 @@ const start = async () => {
   await appServer.start();
 };
 
-try {
-  start();
-} catch (err) {
-  console.error(`Error starting server: ${err.message}`);
-  process.exit(-1);
-}
+
+start()
+  .catch(err => {
+    console.error(`Error starting server: ${err.message}`);
+    process.exit(-1);
+  });
+

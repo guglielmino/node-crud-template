@@ -3,9 +3,14 @@ import { Abstract, DELETE, Errors, GET, Path, PathParam, POST, PUT, Return } fro
 import { BaseModel } from '../../models/base.model';
 import { BaseService } from '../../services/base.service';
 import { ORDER } from '../../order.enum';
+import { Inject } from 'typescript-ioc';
+import { ILogger } from '../../infra/database/logger/logger.interface';
 
 @Abstract
 export abstract class BaseController<TModel extends BaseModel> {
+
+  @Inject
+  private logger: ILogger;
 
   constructor(private service: BaseService<TModel>) { }
 
@@ -27,6 +32,7 @@ export abstract class BaseController<TModel extends BaseModel> {
       );
       return res;
     } else {
+      this.logger.error('Trying to call disabled "list" method');
       throw new Errors.UnauthorizedError('Unauthorized route');
     }
   }
@@ -37,6 +43,7 @@ export abstract class BaseController<TModel extends BaseModel> {
     if (this.getEndpointPermission().get) {
       return this.service.get(_id);
     } else {
+      this.logger.error('Trying to call disabled "get" method');
       throw new Errors.UnauthorizedError('Unauthorized route');
     }
   }
@@ -55,6 +62,7 @@ export abstract class BaseController<TModel extends BaseModel> {
         'insertedIds': insertResult.identifiers
       });
     } else {
+      this.logger.error('Trying to call disabled "create" method');
       throw new Errors.UnauthorizedError('Unauthorized route');
     }
   }
@@ -67,6 +75,7 @@ export abstract class BaseController<TModel extends BaseModel> {
         'deletedCount': deleteResult.affected
       });
     } else {
+      this.logger.error('Trying to call disabled "delete" method');
       throw new Errors.UnauthorizedError('Unauthorized route');
     }
   }
@@ -86,6 +95,7 @@ export abstract class BaseController<TModel extends BaseModel> {
         'affected': updateResult.affected
       });
     } else {
+      this.logger.error('Trying to call disabled "update" method');
       throw new Errors.UnauthorizedError('Unauthorized route');
     }
   }
